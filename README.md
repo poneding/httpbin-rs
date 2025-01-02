@@ -9,8 +9,8 @@
 
 ## 技术栈
 
-- rust[https://www.rust-lang.org/]
-- actix-web[https://actix.rs/]
+- [rust](https://www.rust-lang.org/)
+- [actix-web](https://actix.rs/)
 
 ## 笔记
 
