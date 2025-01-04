@@ -15,8 +15,8 @@
 ## 笔记
 
 - [x] [01.初始化项目](./notes/01_init-repo.md)
-- [ ] [02.支持 Docker 部署](./notes/02_docker.md)
-- [ ] [03.集成 GitHub Action 构建](./notes/03_github-action.md)
+- [x] [02.支持 Docker 部署](./notes/02_docker.md)
+- [x] [03.集成 GitHub Action 构建](./notes/03_github-action.md)
 - [ ] [04.集成 OpenAPI](./notes/04_openapi.md)
 - [ ] [05.实现 HTTP Methods 接口](./notes/05_impl-http-methods.md)
 - [ ] [06.实现 Auth 接口](./notes/06_impl-auth.md)
