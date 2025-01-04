@@ -1,5 +1,7 @@
 # 初始化项目
 
+## 初始化项目
+
 ```bash
 cargo init httpbin-rs && cd httpbin-rs
 
@@ -7,7 +9,7 @@ cargo init httpbin-rs && cd httpbin-rs
 cargo add actix-web
 ```
 
-实现一个简单的 HTTP 服务：
+## 简单实现
 
 ```rust
 use actix_web::{get, App, HttpResponse, HttpServer, Responder};
@@ -26,11 +28,10 @@ async fn hello() -> impl Responder {
 }
 ```
 
-运行：
+## 运行
 
 ```bash
 cargo run
-
-# 打开另一个终端
-curl http://localhost:8080
 ```
+
+访问 <http://localhost:8080>，可以看到 `Hello world!`。

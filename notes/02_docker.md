@@ -94,7 +94,7 @@ ENTRYPOINT ["/httpbin-rs"]
 
 目前更多推荐的是第二种方式。
 
-## 构建脚本
+## 构建
 
 创建编译脚本文件 `build.sh`，内容如下：
 
@@ -118,3 +118,20 @@ docker buildx build . --platform linux/amd64,linux/arm64 -f Dockerfile -t ponedi
 
 echo "🦀 - Done!"
 ```
+
+运行构建脚本：
+
+```bash
+chmod +x build.sh
+./build.sh
+```
+
+## 测试
+
+运行 Docker 镜像：
+
+```bash
+docker run -d -p 8080:8080 poneding/httpbin-rs
+```
+
+浏览器访问 `http://localhost:8080`，如果看到 `Hello world!`，则说明镜像可用。

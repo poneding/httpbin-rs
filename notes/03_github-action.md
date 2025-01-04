@@ -1,6 +1,6 @@
 # 集成 GitHub Action 构建
 
-## 1. 创建 GitHub Action 配置文件
+## 创建 GitHub Action 配置文件
 
 在项目根目录下创建 `.github/workflows` 目录，并在该目录下创建 `docker-build.yml` 文件，内容如下：
 
@@ -56,7 +56,7 @@ jobs:
 
 当目录下的 `src` 目录、`Cargo.toml` 或 `Cargo.lock` 文件发生变化时，触发构建；也可以手动触发构建。
 
-## 2. 配置 GitHub Secrets
+## 配置 GitHub Secrets
 
 在项目的 `Settings` -> `Environments` -> `New environment` 中创建一个环境。
 
@@ -72,7 +72,7 @@ jobs:
 - `ALIYUNACR_USERNAME`：阿里云 ACR 用户名
 - `ALIYUNACR_NAMESPACE`：阿里云 ACR 命名空间
 
-## 3. 提交代码
+## 提交代码
 
 提交代码，之后每次代码提交，符合条件时会触发构建。
 
