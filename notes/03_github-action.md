@@ -21,6 +21,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: default # 利用 Environment(default) 中配置的 Secrets 和 Variables
     steps:
       - uses: actions/checkout@v4
 
@@ -50,7 +51,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:${{ env.TAG }},${{ vars.ALIYUNACR_REGISTRY }}/${{ vars.ALIYUNACR_NAMESPACE }}/${{ env.IMAGE }}:${{ env.TAG }},
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:${{ env.TAG }},${{ vars.ALIYUNACR_REGISTRY }}/${{ vars.ALIYUNACR_NAMESPACE }}/${{ env.IMAGE }}:${{ env.TAG }}
 ```
 
 当目录下的 `src` 目录、`Cargo.toml` 或 `Cargo.lock` 文件发生变化时，触发构建；也可以手动触发构建。
