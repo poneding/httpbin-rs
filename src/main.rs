@@ -2,6 +2,8 @@ use actix_web::{App, HttpServer};
 use openapi::ApiDoc;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
+mod anything;
+mod http_methods;
 mod openapi;
 
 const VERSION: &str = "0.1.0";
@@ -16,6 +18,8 @@ async fn main() -> std::io::Result<()> {
         App::new()
             // 配置 Swagger UI 服务
             .service(SwaggerUi::new("/openapi/{_:.*}").url("/openapi.json", doc))
+            .configure(http_methods::api)
+            .configure(anything::api)
     })
     .bind("0.0.0.0:8080")?
     .run()
