@@ -1,4 +1,5 @@
 use super::anything;
+use super::auth;
 use super::http_methods;
 use utoipa::OpenApi;
 
@@ -12,6 +13,9 @@ use utoipa::OpenApi;
         http_methods::patch_api,
         http_methods::post_api,
         http_methods::put_api,
+
+        // Auth
+        auth::basic_auth_api,
 
         // Anything
         anything::anything_delete_api,

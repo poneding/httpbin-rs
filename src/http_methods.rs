@@ -3,8 +3,10 @@ use actix_web::{
     HttpRequest,
 };
 use serde::Serialize;
-use utoipa::ToSchema;
 use std::collections::HashMap;
+use utoipa::ToSchema;
+
+const TAG: &str = "Http Methods";
 
 #[derive(Serialize, ToSchema)]
 pub(super) struct ApiOutput {
@@ -21,17 +23,18 @@ pub(super) struct ApiOutput {
 
 pub(crate) fn api(cfg: &mut ServiceConfig) {
     cfg.service(resource("/delete").route(delete().to(delete_api)))
-    .service(resource("/get").route(get().to(get_api)))
-    .service(resource("/patch").route(patch().to(patch_api)))
-    .service(resource("/post").route(post().to(post_api)))
-    .service(resource("/put").route(put().to(put_api)));
+        .service(resource("/get").route(get().to(get_api)))
+        .service(resource("/patch").route(patch().to(patch_api)))
+        .service(resource("/post").route(post().to(post_api)))
+        .service(resource("/put").route(put().to(put_api)));
 }
 
 #[utoipa::path(
-    get, 
+    tag = TAG,
+    get,
     path = "/delete",
     responses(
-        (status=200, body=ApiOutput)
+        (status=200, description="The request’s DELETE parameters.", body=ApiOutput)
     )
 )]
 pub(crate) async fn delete_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
@@ -39,10 +42,11 @@ pub(crate) async fn delete_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput>
 }
 
 #[utoipa::path(
-    get, 
+    tag = TAG,
+    get,
     path = "/get",
     responses(
-        (status=200, body=ApiOutput)
+        (status=200, description="The request’s query parameters.", body=ApiOutput)
     )
 )]
 pub(crate) async fn get_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
@@ -50,10 +54,11 @@ pub(crate) async fn get_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
 }
 
 #[utoipa::path(
-    get, 
+    tag = TAG,
+    get,
     path = "/patch",
     responses(
-        (status=200, body=ApiOutput)
+        (status=200, description="The request’s PATCH parameters.", body=ApiOutput)
     )
 )]
 pub(crate) async fn patch_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
@@ -61,10 +66,11 @@ pub(crate) async fn patch_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> 
 }
 
 #[utoipa::path(
-    get, 
+    tag = TAG,
+    get,
     path = "/post",
     responses(
-        (status=200, body=ApiOutput)
+        (status=200, description="The request’s POST parameters.", body=ApiOutput)
     )
 )]
 pub(crate) async fn post_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
@@ -72,10 +78,11 @@ pub(crate) async fn post_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
 }
 
 #[utoipa::path(
-    get, 
+    tag = TAG,
+    get,
     path = "/put",
     responses(
-        (status=200, body=ApiOutput)
+        (status=200, description="The request’s PUT parameters.", body=ApiOutput)
     )
 )]
 pub(crate) async fn put_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
@@ -84,23 +91,23 @@ pub(crate) async fn put_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
 
 async fn anything(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
     let headers = req
-    .headers()
-    .iter()
-    .map(|x| {
-        (
-            x.0.to_string(),
-            x.1.to_str().unwrap_or_default().to_string(),
-        )
-    })
-    .collect();
+        .headers()
+        .iter()
+        .map(|x| {
+            (
+                x.0.to_string(),
+                x.1.to_str().unwrap_or_default().to_string(),
+            )
+        })
+        .collect();
 
     let mut args = HashMap::new();
-        if !req.query_string().is_empty(){
-        for arg in req.query_string().split('&'){
+    if !req.query_string().is_empty() {
+        for arg in req.query_string().split('&') {
             let mut kv = arg.split('=');
             let key = kv.next().unwrap_or_default().to_string();
             let mut value = kv.next().unwrap_or_default().to_string();
-            if let Some(v) = args.get(&key){
+            if let Some(v) = args.get(&key) {
                 value = format!("{},{}", v, value);
             }
             args.insert(key, value);

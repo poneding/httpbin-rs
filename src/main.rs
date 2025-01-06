@@ -3,6 +3,7 @@ use openapi::ApiDoc;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 mod anything;
+mod auth;
 mod http_methods;
 mod openapi;
 
@@ -19,6 +20,7 @@ async fn main() -> std::io::Result<()> {
             // 配置 Swagger UI 服务
             .service(SwaggerUi::new("/openapi/{_:.*}").url("/openapi.json", doc))
             .configure(http_methods::api)
+            .configure(auth::api)
             .configure(anything::api)
     })
     .bind("0.0.0.0:8080")?
