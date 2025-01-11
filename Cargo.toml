@@ -7,7 +7,8 @@ edition = "2021"
 actix-web = "4.9.0"
 base64 = "0.22.1"
 cargo-watch = "8.5.3"
+env_logger = "0.11.6"
 serde = { version = "1.0.217", features = ["derive"] }
-serde_json = "1.0.134"
+serde_json = "1.0.135"
 utoipa = "5.3.1"
-utoipa-swagger-ui = { version = "8.1.0", features = ["actix-web"] }
+utoipa-swagger-ui = { version = "8.1.1", features = ["actix-web"] }

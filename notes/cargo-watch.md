@@ -4,20 +4,6 @@
 
 ## 安装
 
-实践下来，在不同的操作系统下，安装 `cargo-watch` 有不同的方式。
-
-- MacOS
-
-```bash
-# 首先得先安装 binstall
-brew install binstall
-
-# 然后安装 cargo-watch
-cargo binstall cargo-watch
-```
-
-- Linux
-
 ```bash
 cargo install cargo-watch
 ```

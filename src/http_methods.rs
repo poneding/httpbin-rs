@@ -115,7 +115,7 @@ async fn anything(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
     }
 
     Json(ApiOutput {
-        args: args.is_empty().then_some(args),
+        args: (!args.is_empty()).then_some(args),
         data: String::from_utf8(data.to_vec()).unwrap_or_default(),
         files: None,
         form: None,
