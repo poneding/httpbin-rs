@@ -31,7 +31,7 @@ pub(crate) fn api(cfg: &mut ServiceConfig) {
 
 #[utoipa::path(
     tag = TAG,
-    get,
+    delete,
     path = "/delete",
     responses(
         (status=200, description="The request’s DELETE parameters.", body=ApiOutput)
@@ -55,7 +55,7 @@ pub(crate) async fn get_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
 
 #[utoipa::path(
     tag = TAG,
-    get,
+    patch,
     path = "/patch",
     responses(
         (status=200, description="The request’s PATCH parameters.", body=ApiOutput)
@@ -67,7 +67,7 @@ pub(crate) async fn patch_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> 
 
 #[utoipa::path(
     tag = TAG,
-    get,
+    post,
     path = "/post",
     responses(
         (status=200, description="The request’s POST parameters.", body=ApiOutput)
@@ -79,7 +79,7 @@ pub(crate) async fn post_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
 
 #[utoipa::path(
     tag = TAG,
-    get,
+    put,
     path = "/put",
     responses(
         (status=200, description="The request’s PUT parameters.", body=ApiOutput)
@@ -89,7 +89,7 @@ pub(crate) async fn put_api(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
     anything(req, data).await
 }
 
-async fn anything(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
+pub(crate) async fn anything(req: HttpRequest, data: Bytes) -> Json<ApiOutput> {
     let headers = req
         .headers()
         .iter()

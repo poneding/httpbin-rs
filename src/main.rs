@@ -6,11 +6,12 @@ use actix_web::{
 };
 use env_logger::Env;
 use openapi::ApiDoc;
-use std::net::{Ipv4Addr, Ipv6Addr};
+use std::net::Ipv4Addr;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 mod anything;
 mod auth;
+mod dynamic_data;
 mod http_methods;
 mod openapi;
 
@@ -34,12 +35,13 @@ async fn main() -> std::io::Result<()> {
             .configure(http_methods::api)
             .configure(auth::api)
             .configure(anything::api)
+            .configure(dynamic_data::api)
     })
     // 两种绑定方式
     // .bind("0.0.0.0:8080")? // 同 .bind(("0.0.0.0", 8080))?
     // .bind("[::1]:8080")? // 同 .bind(("::1", 8080))?
     .bind((Ipv4Addr::UNSPECIFIED, 8080))?
-    .bind((Ipv6Addr::UNSPECIFIED, 8080))?
+    // .bind((Ipv6Addr::UNSPECIFIED, 8080))?
     .run()
     .await
 }

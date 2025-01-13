@@ -1,5 +1,6 @@
 use super::anything;
 use super::auth;
+use super::dynamic_data;
 use super::http_methods;
 use utoipa::OpenApi;
 
@@ -28,6 +29,13 @@ use utoipa::OpenApi;
         anything::all_anything_patch_api,
         anything::all_anything_post_api,
         anything::all_anything_put_api,
+
+        // Dynamic data
+        dynamic_data::delete_delay_api,
+        dynamic_data::get_delay_api,
+        dynamic_data::patch_delay_api,
+        dynamic_data::post_delay_api,
+        dynamic_data::put_delay_api
     )
 )]
 pub(crate) struct ApiDoc;
