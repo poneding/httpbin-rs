@@ -2,6 +2,10 @@ use super::anything;
 use super::auth;
 use super::dynamic_data;
 use super::http_methods;
+use utoipa::openapi::security::HttpAuthScheme;
+use utoipa::openapi::security::HttpBuilder;
+use utoipa::openapi::security::SecurityScheme;
+use utoipa::Modify;
 use utoipa::OpenApi;
 
 #[derive(OpenApi)]
@@ -17,6 +21,7 @@ use utoipa::OpenApi;
 
         // Auth
         auth::basic_auth_api,
+        auth::bearer_auth_api,
 
         // Anything
         anything::anything_delete_api,
@@ -36,6 +41,30 @@ use utoipa::OpenApi;
         dynamic_data::patch_delay_api,
         dynamic_data::post_delay_api,
         dynamic_data::put_delay_api
-    )
+    ),
+    modifiers(&SecurityAddon)
 )]
 pub(crate) struct ApiDoc;
+
+struct SecurityAddon;
+
+impl Modify for SecurityAddon {
+    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
+        let components = openapi.components.as_mut().unwrap();
+
+        components.add_security_scheme(
+            "bearerAuth",
+            SecurityScheme::Http(
+                HttpBuilder::new()
+                    .scheme(HttpAuthScheme::Bearer)
+                    .bearer_format("JWT")
+                    .build(),
+            ),
+        );
+
+        components.add_security_scheme(
+            "basicAuth",
+            SecurityScheme::Http(HttpBuilder::new().scheme(HttpAuthScheme::Basic).build()),
+        );
+    }
+}

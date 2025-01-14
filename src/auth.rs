@@ -1,5 +1,7 @@
 use actix_web::{
-    web::{self, get, resource, ServiceConfig},
+    get,
+    http::header,
+    web::{self, ServiceConfig},
     HttpRequest, HttpResponse, Result,
 };
 use base64::{prelude::BASE64_STANDARD, Engine};
@@ -8,7 +10,7 @@ use serde_json::json;
 const TAG: &str = "Auth";
 
 pub(crate) fn api(cfg: &mut ServiceConfig) {
-    cfg.service(resource("/basic-auth/{user}/{passwd}").route(get().to(basic_auth_api)));
+    cfg.service(basic_auth_api).service(bearer_auth_api);
 }
 
 #[utoipa::path(
@@ -20,10 +22,15 @@ pub(crate) fn api(cfg: &mut ServiceConfig) {
     ),
     path = "/basic-auth/{user}/{passwd}",
     responses(
-        (status=200, description="TSucessful authentication."),
+        (status=200, description="Sucessful authentication."),
         (status=401, description="Unsuccessful authentication.")
+    ),
+    security(
+        (),
+        ("basicAuth" = [])
     )
 )]
+#[get("/basic-auth/{user}/{passwd}")]
 pub(crate) async fn basic_auth_api(
     path: web::Path<(String, String)>,
     req: HttpRequest,
@@ -51,4 +58,42 @@ pub(crate) async fn basic_auth_api(
     Ok(HttpResponse::Unauthorized()
         .insert_header(("WWW-Authenticate", "Basic realm=\"Fake Realm\""))
         .body("Unsuccessful authentication."))
+}
+
+#[utoipa::path(
+    tag = TAG,
+    get,
+    path = "/bearer",
+    responses(
+        (status=200, description="Sucessful authentication."),
+        (status=401, description="Unsuccessful authentication.")
+    ),
+    security(
+        (),
+        ("bearerAuth" = [])
+    )
+)]
+#[get("/bearer")]
+pub(crate) async fn bearer_auth_api(req: HttpRequest) -> Result<HttpResponse> {
+    let Some(authorization) = req.headers().get("Authorization") else {
+        return Ok(HttpResponse::Unauthorized()
+            .insert_header((header::WWW_AUTHENTICATE, "Bearer"))
+            .finish());
+    };
+
+    println!("{:?}", authorization);
+
+    let authorization = authorization.to_str().unwrap();
+
+    let parts: Vec<&str> = authorization.split(' ').collect();
+    if parts.len() != 2 || parts[0] != "Bearer" {
+        return Ok(HttpResponse::Unauthorized()
+            .insert_header((header::WWW_AUTHENTICATE, "Bearer"))
+            .finish());
+    };
+
+    Ok(HttpResponse::Ok().json(json!({
+        "authenticated": true,
+        "token": parts[1],
+    })))
 }

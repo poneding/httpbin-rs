@@ -11,6 +11,7 @@
 
 - [rust](https://www.rust-lang.org/)
 - [actix-web](https://actix.rs/)
+- [tokio](https://tokio.rs/)
 
 ## 笔记
 
@@ -32,6 +33,14 @@
 ## actix-web
 
 - [中间件](./notes/actix-web/middleware.md)
+
+## tokio
+
+- [sleep](./notes/tokio/sleep.md)
+
+## utoipa
+
+- [auth](./notes/utoipa/auth.md)
 
 ## 附录
 
