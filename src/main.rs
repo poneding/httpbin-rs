@@ -6,7 +6,7 @@ use actix_web::{
 };
 use env_logger::Env;
 use openapi::ApiDoc;
-use std::net::Ipv4Addr;
+use std::{env, net::Ipv4Addr};
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 mod anything;
@@ -15,7 +15,7 @@ mod dynamic_data;
 mod http_methods;
 mod openapi;
 
-const VERSION: &str = "0.1.0";
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
