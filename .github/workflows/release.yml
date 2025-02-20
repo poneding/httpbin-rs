@@ -1,0 +1,87 @@
+name: Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - v[0-9]+.*
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/create-gh-release-action@v1
+        with:
+          # (optional) Path to changelog.
+          # changelog: CHANGELOG.md
+          # (required) GitHub token for creating GitHub Releases.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  upload-assets:
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            # features: systemd,io_uring
+            target_os: linux
+            target_arch: amd64
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+            target_os: linux
+            target_arch: arm64
+          # Universal macOS binary is supported as universal-apple-darwin.
+          - target: universal-apple-darwin
+            os: macos-latest
+            target_os: darwin
+            target_arch: universal
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            target_os: darwin
+            target_arch: arm64
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            target_os: darwin
+            target_arch: amd64
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            target_os: windows
+            target_arch: amd64
+    runs-on: ${{ matrix.os }}
+    needs: create-release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          # (required) Comma-separated list of binary names (non-extension portion of filename) to build and upload.
+          # Note that glob pattern is not supported yet.
+          bin: httpbin-rs
+          # [default value: $bin-$target]
+          # [possible values: the following variables and any string]
+          #   variables:
+          #     - $bin    - Binary name (non-extension portion of filename).
+          #     - $target - Target triple.
+          #     - $tag    - Tag of this release.
+          # When multiple binary names are specified, default archive name or $bin variable cannot be used.
+          archive: $bin_$tag_${{ matrix.target_os }}_${{ matrix.target_arch }}
+          # (optional) Target triple, default is host triple.
+          target: ${{ matrix.target }}
+          # (optional) On which platform to distribute the `.tar.gz` file.
+          # [default value: unix]
+          # [possible values: all, unix, windows, none]
+          tar: unix
+          # (optional) On which platform to distribute the `.zip` file.
+          # [default value: windows]
+          # [possible values: all, unix, windows, none]
+          zip: windows
+          # (optional) Build with the given set of features if any.
+          features: ${{ matrix.features || '' }}
+          # (required) GitHub token for uploading assets to GitHub Releases.
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # (optional) Comma-separated list of additional files to be included to archive.
+          # Note that glob pattern is not supported yet.
+          # include: LICENSE,README.md,README_zh-CN.md
+          # checksum: sha256
