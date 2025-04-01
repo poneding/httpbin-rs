@@ -1,6 +1,3 @@
-VERSION := $(shell cargo read-manifest| jq -r .version)
-export VERSION
-
 .PHONY:
 install:
 	cargo install --path .
@@ -12,6 +9,11 @@ format:
 
 .PHONY:
 release:
-	git tag -a v$(VERSION) -m "release v$(VERSION)"
-	git push origin v$(VERSION)
+	export VERSION=v$(shell cargo read-manifest| jq -r .version)
+	git tag -a $(VERSION) -m "release $(VERSION)"
+	git push origin $(VERSION)
 	cargo publish
+
+.PHONY:
+docker:
+	./build.sh

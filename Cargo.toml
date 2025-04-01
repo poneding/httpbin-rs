@@ -1,6 +1,6 @@
 [package]
 name = "httpbin-rs"
-version = "0.1.0"
+version = "0.1.0-actix-web"
 edition = "2021"
 authors = ["Pone Ding <poneding@gmail.com>"]
 description = "使用 Rust 实现 httpbin"

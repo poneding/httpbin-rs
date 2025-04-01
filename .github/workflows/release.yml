@@ -119,4 +119,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:${{ env.VERSION }},${{ vars.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:latest,${{ vars.ALIYUNACR_REGISTRY }}/${{ vars.ALIYUNACR_NAMESPACE }}/${{ env.IMAGE }}:${{ env.VERSION }},${{ vars.ALIYUNACR_REGISTRY }}/${{ vars.ALIYUNACR_NAMESPACE }}/${{ env.IMAGE }}:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:${{ env.VERSION }},${{ vars.ALIYUNACR_REGISTRY }}/${{ vars.ALIYUNACR_NAMESPACE }}/${{ env.IMAGE }}:${{ env.VERSION }}
