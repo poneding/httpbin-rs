@@ -102,7 +102,7 @@ ENTRYPOINT ["/httpbin-rs"]
 #!/bin/bash
 
 IMAGE=httpbin-rs
-TAG=latest
+VERSION=v$(cargo read-manifest| jq -r .version)
 
 if ! docker buildx inspect rs-builder &> /dev/null; then
   echo "🦀 - Creating builder: rs-builder"
@@ -114,7 +114,11 @@ docker buildx use rs-builder
 
 echo "🦀 - Building docker image..."
 
-docker buildx build . --platform linux/amd64,linux/arm64 -f Dockerfile -t poneding/$IMAGE:$TAG -t registry.cn-hangzhou.aliyuncs.com/pding/$IMAGE:$TAG --push
+docker buildx build . --platform linux/amd64,linux/arm64 \
+  -f Dockerfile \
+  -t poneding/$IMAGE:$VERSION \
+  -t registry.cn-hangzhou.aliyuncs.com/pding/$IMAGE:$VERSION \
+  --push
 
 echo "🦀 - Done!"
 ```
@@ -131,7 +135,7 @@ chmod +x build.sh
 运行 Docker 镜像：
 
 ```bash
-docker run -d -p 8080:8080 poneding/httpbin-rs
+docker run -d -p 8080:8080 poneding/httpbin-rs:v$(cargo read-manifest| jq -r .version)
 ```
 
-浏览器访问 `http://localhost:8080`，如果看到 `Hello world!`，则说明镜像可用。
+浏览器访问 [`http://localhost:8080`](http://localhost:8080)，如果看到 `Hello world!`，则说明镜像可用。

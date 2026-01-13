@@ -5,26 +5,21 @@
 ```bash
 cargo init httpbin-rs && cd httpbin-rs
 
-# 添加对 actix-web 的依赖
-cargo add actix-web
+# 添加对 axum 的依赖
+cargo add axum
 ```
 
 ## 简单实现
 
 ```rust
-use actix_web::{get, App, HttpResponse, HttpServer, Responder};
+use axum::{Router, routing::get};
+use tokio::net::TcpListener;
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(hello))
-        .bind("0.0.0.0:8080")?
-        .run()
-        .await
-}
-
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+#[tokio::main]
+async fn main() {
+    let app = Router::new().route("/", get(|| async { "Hello world!" }));
+    let listener = TcpListener::bind("0.0.0.0:8080").await.unwrap();
+    axum::serve(listener, app).await.unwrap();
 }
 ```
 
@@ -34,4 +29,4 @@ async fn hello() -> impl Responder {
 cargo run
 ```
 
-访问 <http://localhost:8080>，可以看到 `Hello world!`。
+访问 [`http://localhost:8080`](http://localhost:8080)，可以看到 `Hello world!`。

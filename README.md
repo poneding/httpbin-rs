@@ -1,5 +1,7 @@
 # httpbin-rs
 
+[![GitHub](https://img.shields.io/badge/GitHub-000?style=flat&logo=github&logoColor=white)](https://github.com/poneding/httpbin-rs)
+
 使用 Rust 实现 [httpbin](https://httpbin.org)。
 
 ## 目标
@@ -10,8 +12,10 @@
 ## 技术栈
 
 - [rust](https://www.rust-lang.org/)
-- [actix-web](https://actix.rs/)
+- [axum](https://github.com/tokio-rs/axum)
 - [tokio](https://tokio.rs/)
+
+> 基于 actix-web 版本实现：[分支: actix-web-based](https://github.com/poneding/httpbin-rs/tree/actix-web-based)
 
 ## 笔记
 
